@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ytc.dao.UserDao" >
+  <resultMap id="BaseResultMap" type="com.ytc.model.User" >
+    <result column="userId" property="userId"  />
+    <result column="userName" property="userName"  />
+    <result column="userPwd" property="userPwd"  />
+  </resultMap>
+  <select id="queryUserList" resultMap="BaseResultMap">
+    select * from t_user
+  </select>
+
+</mapper>
