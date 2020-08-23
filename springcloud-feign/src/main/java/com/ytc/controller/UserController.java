@@ -13,6 +13,8 @@ package com.ytc.controller;
 import com.ytc.model.User;
 import com.ytc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,16 +28,17 @@ import java.util.List;
  * @create 2020/8/23
  * @since 1.0.0
  */
-@RestController
+@Controller
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @GetMapping("queryUserList")
-    public String queryUserList(){
+    public String queryUserList(Model model){
         List<User> list = userService.queryUserList();
+        model.addAttribute("list",list);
         System.out.println(list);
-        return "查询成功";
+        return "show";
     }
 }
