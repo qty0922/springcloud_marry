@@ -33,6 +33,12 @@
             <!-- dev：开发  |  test：测试  |  prod：生产 -->
             <scope>test</scope>
         </dependency>
+
+        <!-- spring-Security 的依赖包 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 
     <!-- Spring Cloud -->
