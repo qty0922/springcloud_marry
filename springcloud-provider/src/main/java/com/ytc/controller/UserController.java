@@ -14,8 +14,7 @@ import com.ytc.dao.UserDao;
 import com.ytc.model.User;
 import com.ytc.service.UserServiceApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,9 +32,20 @@ public class UserController implements UserServiceApi {
     @Autowired
     private UserDao userDao;
 
+    @GetMapping("hello")
+    public String hello() {
+        return "hello";
+    }
+
     @GetMapping("queryUserList")
     public List<User> queryUserList(){
         List<User> list = userDao.queryUserList();
         return list;
+    }
+
+    @PostMapping("register")
+    public void register(@RequestBody User user){
+        userDao.register(user);
+        System.out.println("注册成功");
     }
 }

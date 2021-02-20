@@ -2,12 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ytc.dao.UserDao" >
   <resultMap id="BaseResultMap" type="com.ytc.model.User" >
-    <result column="userId" property="userId"  />
-    <result column="userName" property="userName"  />
-    <result column="userPwd" property="userPwd"  />
+    <id column="userId" property="userId" />
+    <result column="userName" property="userName" />
+    <result column="userPwd" property="userPwd" />
   </resultMap>
+  <sql id="Base_Column_List" >
+    userId, userName, userPwd
+  </sql>
   <select id="queryUserList" resultMap="BaseResultMap">
-    select * from t_user
+    select
+    <include refid="Base_Column_List"/>
+     from sys_user
   </select>
 
+  <insert id="register" parameterType="com.ytc.model.User">
+    insert into sys_user values (#{userId}, #{userName}, #{userPwd})
+  </insert>
 </mapper>

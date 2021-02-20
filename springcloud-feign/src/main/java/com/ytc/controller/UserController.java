@@ -16,7 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -34,11 +35,25 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("hello")
+    public String hello(){
+        return "hello";
+    }
+
     @GetMapping("queryUserList")
     public String queryUserList(Model model){
         List<User> list = userService.queryUserList();
         model.addAttribute("list",list);
         System.out.println(list);
-        return "show";
+        return "user/show";
+    }
+
+    @PostMapping("register")
+    public void register(User user){
+        user.setUserId(2);
+        user.setUserName("admin");
+        user.setUserPwd("admin");
+        userService.register(user);
+        System.out.println("注册成功");
     }
 }
