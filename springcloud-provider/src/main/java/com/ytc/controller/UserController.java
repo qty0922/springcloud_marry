@@ -10,6 +10,7 @@
  */
 package com.ytc.controller;
 
+import com.netflix.discovery.EurekaClient;
 import com.ytc.dao.UserDao;
 import com.ytc.model.User;
 import com.ytc.service.UserServiceApi;
@@ -31,6 +32,19 @@ public class UserController implements UserServiceApi {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private EurekaClient eurekaClient;
+
+    /**
+     * 获取客户端的一些配置信息
+     * 无需再去调用eureka提供的REST API
+     * @return
+     */
+    @GetMapping("/article/infos")
+    public Object serviceUrl(){
+        return eurekaClient.getInstancesByVipAddress("springcloud-provider",false);
+    }
 
     @GetMapping("hello")
     public String hello() {
