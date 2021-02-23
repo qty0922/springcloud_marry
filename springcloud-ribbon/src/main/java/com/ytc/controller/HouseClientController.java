@@ -12,6 +12,8 @@ package com.ytc.controller;
 
 import com.ytc.model.HouseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +34,9 @@ public class HouseClientController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private LoadBalancerClient loadBalancer;
 
     /**
      * 获取数据结果可通过 RestTemplate 的 getForObject 方法（如下代码所示）来实现，此方法有三个重载的实现：
@@ -95,5 +100,16 @@ public class HouseClientController {
         houseInfo.setHouseName("北京—海淀—XX小区");
         Long id = restTemplate.postForObject("http://springcloud-ribbon:8083/house/save", houseInfo, Long.class);
         return id;
+    }
+
+    /**
+     * 获取一个服务的服务地址
+     * 返回结果形式为json格式
+     * @return
+     */
+    @GetMapping("/choose")
+    public Object chooseUrl(){
+        ServiceInstance serviceInstance = loadBalancer.choose("springcloud-ribbon");
+        return serviceInstance;
     }
 }
