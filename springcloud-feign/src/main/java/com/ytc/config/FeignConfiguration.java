@@ -11,6 +11,7 @@
 package com.ytc.config;
 
 import feign.Logger;
+import feign.auth.BasicAuthRequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,5 +36,28 @@ public class FeignConfiguration {
     @Bean
     Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL;
+    }
+
+    /**
+     * 契约配置：
+     *
+     * Spring Cloud 在 Feign 的基础上做了扩展，
+     * 可以让 Feign 支持 Spring MVC 的注解来调用。
+     * 原生的 Feign 是不支持 Spring MVC 注解的
+     * @return
+     */
+    /*@Bean
+    public Contract feignContract() {
+        return new feign.Contract.Default();
+    }*/
+
+    /**
+     * Basic 认证配置
+     *
+     * @return
+     */
+    @Bean
+    public BasicAuthRequestInterceptor basicAuthRequestInterceptor() {
+        return new BasicAuthRequestInterceptor("user", "password");
     }
 }
