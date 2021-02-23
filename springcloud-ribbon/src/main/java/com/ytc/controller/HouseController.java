@@ -11,10 +11,7 @@
 package com.ytc.controller;
 
 import com.ytc.model.HouseInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -38,5 +35,12 @@ public class HouseController {
         System.out.println("调用getData2方法");
         return name;
     }
+
+    @PostMapping("/house/save")
+    public Long addData(@RequestBody HouseInfo houseInfo) {
+        System.out.println(houseInfo.getHouseName());
+        return 1001L;
+    }
+
 
 }

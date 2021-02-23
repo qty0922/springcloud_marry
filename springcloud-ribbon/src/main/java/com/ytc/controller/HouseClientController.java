@@ -74,4 +74,26 @@ public class HouseClientController {
         }
         return null;
     }
+
+    /**
+     * postForObject 同样有 3 个重载的实现。除了 postForObject 还可以使用 postForEntity 方法
+     *
+     *
+     * public <T> T postForObject(String url, Object request,
+     *                            Class<T> responseType, Object... uriVariables);
+     *
+     * public <T> T postForObject(String url, Object request,
+     *                            Class<T> responseType, Map<String, ?> uriVariables);
+     *
+     * public <T> T postForObject(URI url, Object request, Class<T> responseType);
+     * @return
+     */
+    @GetMapping("/call/save")
+    public Long add() {
+        HouseInfo houseInfo = new HouseInfo();
+        houseInfo.setHouseId(123);
+        houseInfo.setHouseName("北京—海淀—XX小区");
+        Long id = restTemplate.postForObject("http://springcloud-ribbon:8083/house/save", houseInfo, Long.class);
+        return id;
+    }
 }
