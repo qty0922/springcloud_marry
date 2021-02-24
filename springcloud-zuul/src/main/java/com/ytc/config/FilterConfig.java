@@ -10,6 +10,7 @@
  */
 package com.ytc.config;
 
+import com.ytc.filter.ErrorFilter;
 import com.ytc.filter.IpFilter;
 import com.ytc.filter.MyFilter1;
 import com.ytc.filter.MyFilter2;
@@ -40,5 +41,10 @@ public class FilterConfig {
     @Bean
     public MyFilter2 myFilter2(){
         return new MyFilter2();
+    }
+
+    @Bean
+    public ErrorFilter errorFilter(){
+        return new ErrorFilter();
     }
 }
