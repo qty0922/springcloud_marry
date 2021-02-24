@@ -47,6 +47,17 @@ public class MyFilter1 extends ZuulFilter {
         RequestContext context = RequestContext.getCurrentContext();
         context.set("msg","你好吗？");
 
+        /**
+         * 过滤器拦截请求：
+         *
+         * 在 RequestContext 中设置一个值来标识是否成功
+         * 当为 true 的时候，后续的过滤器才执行，若为 false 则不执行。
+         * 后面则需要get一个这个值，再进行判断下一步是否要执行操作
+         *
+         * 请求以ctx.containsKey()来判断是否要进行拦截
+         */
+        context.set("isSuccess", false);
+
         HttpServletRequest request = context.getRequest();
         String token = request.getParameter("token");
 
