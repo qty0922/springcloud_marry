@@ -11,6 +11,8 @@
 package com.ytc.config;
 
 import com.ytc.filter.IpFilter;
+import com.ytc.filter.MyFilter1;
+import com.ytc.filter.MyFilter2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,4 +32,13 @@ public class FilterConfig {
         return new IpFilter();
     }
 
+    @Bean
+    public MyFilter1 myFilter1(){
+        return new MyFilter1();
+    }
+
+    @Bean
+    public MyFilter2 myFilter2(){
+        return new MyFilter2();
+    }
 }

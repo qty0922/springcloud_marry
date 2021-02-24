@@ -54,6 +54,7 @@ public class IpFilter extends ZuulFilter {
     /**
      * 过滤器执行的顺序
      * 在同一个阶段存在多个过滤器时，按照返回的值的顺序执行
+     * 越小越先执行
      */
     @Override
     public int filterOrder() {
@@ -68,7 +69,7 @@ public class IpFilter extends ZuulFilter {
      */
     @Override
     public boolean shouldFilter() {
-        return true;
+        return false;
     }
 
 
