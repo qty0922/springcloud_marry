@@ -33,8 +33,7 @@ public class DemoController {
     @GetMapping("/callHello")
     @HystrixCommand(fallbackMethod = "defaultCallHello")
     public String callHello(){
-        String result = restTemplate.getForObject("http://springcloud-provider/hello", String.class);
-        return result;
+        return restTemplate.getForObject("http://springcloud-provider/hello", String.class);
     }
 
     public String defaultCallHello() {
