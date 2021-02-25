@@ -41,3 +41,56 @@ spring:
 #        - Path=/springcloud
 
 #——————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+#——————————————————————————————————————————断言工厂———————————————————————————————————————————————————————
+
+#1、Path 路由断言工厂
+#  根据 Path 定义好的规则来判断访问的 URI 是否匹配
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: host_route
+#          uri: http://c.biancheng.net
+#          predicates:
+#            - Path=/blog/detail/{segment}
+
+
+#2、Query 路由断言工厂
+#  Query 路由断言工厂接收两个参数，一个必需的参数和一个可选的正则表达式。
+#  如果请求包含一个值与 ba 匹配的 foo 查询参数，则此路由将匹配。bar 和 baz 也会匹配，因为第二个参数是正则表达式。
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: query_route
+#          uri: http://c.biancheng.net
+#          predicates:
+#            - Query=foo, ba.
+
+
+#3、Method 路由断言工厂
+#  Method 路由断言工厂接收一个参数，即要匹配的 HTTP 方法。
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: method_route
+#          uri: http://baidu.com
+#          predicates:
+#            - Method=GET
+
+
+#4、Header 路由断言工厂
+#  Header 路由断言工厂接收两个参数，分别是请求头名称和正则表达式。
+#  如果请求中带有请求头名为 x-request-id，其值与 \d+ 正则表达式匹配（值为一个或多个数字），则此路由匹配。
+#spring:
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: header_route
+#          uri: http://example.org
+#          predicates:
+#            - Header=X-Request-Id, \d+
+
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————
