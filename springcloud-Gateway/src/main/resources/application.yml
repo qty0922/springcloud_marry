@@ -1,6 +1,18 @@
 server:
   port: 8086
 
+#————————————————————————————————————————————————————————————————————————————————
+
+#在 Eureka 开启认证后，客户端注册的配置也要加上认证的用户名和密码信息：
+eureka:
+  client:
+    service-url:
+      defaultZone: http://qty:qty@127.0.0.1:8080/eureka/
+    #自定义 Eureka 的 InstanceID，格式 —— 服务名称：服务所在 IP：服务端口
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+
+
 #—————————————————————————————————————————————————————————————————————————————————————————————————————————
 
 # uri 以 lb：//开头（lb 代表从注册中心获取服务），
@@ -8,14 +20,21 @@ server:
 #  org.springframework.cloud.gateway.support.NotFoundException: Unable to find instance for user-service1
 spring:
   application:
-    name: springcloud-Gateway
+    name: springcloud-gateway
   cloud:
     gateway:
       routes:
         - id: springcloud-provider
           uri: lb://springcloud-provider
+          #断言
           predicates:
-            - Path=/springcloud-provider/*
+            - Path=/springcloud-provider*
+      #为所有服务都进行转发操作
+      discovery:
+        locator:
+          enabled: true
+          #开启小写服务名称后大写的服务名称就不能使用，两者只能选其一。
+          lowerCaseServiceId: true
 #  - id: path_route
 #      uri: http://c.biancheng.net
 #      predicates:
