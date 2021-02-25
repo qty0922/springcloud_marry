@@ -1,10 +1,24 @@
 server:
   port: 8086
+
+#—————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+# uri 以 lb：//开头（lb 代表从注册中心获取服务），
+#  后面接的就是你需要转发到的服务名称，这个服务名称必须跟 Eureka 中的对应，否则会找不到服务，错误代码如下：
+#  org.springframework.cloud.gateway.support.NotFoundException: Unable to find instance for user-service1
 spring:
+  application:
+    name: springcloud-Gateway
   cloud:
     gateway:
       routes:
-        - id: path_route
-          uri: http://c.biancheng.net
+        - id: springcloud-provider
+          uri: lb://springcloud-provider
           predicates:
-          - Path=/springcloud
+            - Path=/springcloud-provider/*
+#  - id: path_route
+#      uri: http://c.biancheng.net
+#      predicates:
+#        - Path=/springcloud
+
+#——————————————————————————————————————————————————————————————————————————————————————————————————————————
