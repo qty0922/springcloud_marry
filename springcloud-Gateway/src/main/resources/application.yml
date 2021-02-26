@@ -99,12 +99,47 @@ eureka:
 
 #1、ip限流
 
+#spring:
+#  application:
+#    name: springcloud-gateway
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: springcloud-provider
+#          uri: lb://springcloud-provider
+#          #断言
+#          predicates:
+#            - Path=/springcloud-provider*
+#            - RemoteAddr=192.168.1.28
+#      #为所有服务都进行转发操作
+#      discovery:
+#        locator:
+#          enabled: true
+#          #开启小写服务名称后大写的服务名称就不能使用，两者只能选其一。
+#          lowerCaseServiceId: true
+##      filter 名称必须是 RequestRateLimiter。
+##      redis-rate-limiter.replenishRate：允许用户每秒处理多少个请求。
+##      redis-rate-limiter.burstCapacity：令牌桶的容量，允许在 1s 内完成的最大请求数。
+##      key-resolver：使用 SpEL 按名称引用 bean。
+#      filter:
+#        - name: RequestRateLimiter
+#          args:
+#            redis-rate-limiter.replenishRate: 10
+#            redis-rate-limiter.burstCapacity: 20
+#            key-resolver: "#{@ipKeyResolver}"
+
+#——————————————————————————————————————————————————————————————————————————————————————————————————————
+
+
+#—————————————————————————————————————————————熔断回退——————————————————————————————————————————————————
+
+#内置了 HystrixGatewayFilterFactory 来实现路由级别的熔断，只需要配置即可实现熔断回退功能
 spring:
   application:
     name: springcloud-gateway
-  redis:
-    host: 127.0.0.1
-    port: 6379
   cloud:
     gateway:
       routes:
@@ -113,20 +148,19 @@ spring:
           #断言
           predicates:
             - Path=/springcloud-provider*
-            - RemoteAddr=192.168.1.28
+          filter:
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                #           fallbackUri 是发生熔断时回退的 URI 地址，目前只支持 forward 模式的 URI。如果服务被降级，该请求会被转发到该 URI 中。
+                fallbackUri: forward:/fallback
       #为所有服务都进行转发操作
       discovery:
         locator:
           enabled: true
           #开启小写服务名称后大写的服务名称就不能使用，两者只能选其一。
           lowerCaseServiceId: true
-#      filter 名称必须是 RequestRateLimiter。
-#      redis-rate-limiter.replenishRate：允许用户每秒处理多少个请求。
-#      redis-rate-limiter.burstCapacity：令牌桶的容量，允许在 1s 内完成的最大请求数。
-#      key-resolver：使用 SpEL 按名称引用 bean。
-      filter:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 10
-            redis-rate-limiter.burstCapacity: 20
-            key-resolver: "#{@ipKeyResolver}"
+      #      filter 名称必须是 Hystrix。
+
+#——————————————————————————————————————————————————————————————————————————————————————————
+
