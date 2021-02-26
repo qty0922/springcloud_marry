@@ -18,23 +18,23 @@ eureka:
 # uri 以 lb：//开头（lb 代表从注册中心获取服务），
 #  后面接的就是你需要转发到的服务名称，这个服务名称必须跟 Eureka 中的对应，否则会找不到服务，错误代码如下：
 #  org.springframework.cloud.gateway.support.NotFoundException: Unable to find instance for user-service1
-spring:
-  application:
-    name: springcloud-gateway
-  cloud:
-    gateway:
-      routes:
-        - id: springcloud-provider
-          uri: lb://springcloud-provider
-          #断言
-          predicates:
-            - Path=/springcloud-provider*
-      #为所有服务都进行转发操作
-      discovery:
-        locator:
-          enabled: true
-          #开启小写服务名称后大写的服务名称就不能使用，两者只能选其一。
-          lowerCaseServiceId: true
+#spring:
+#  application:
+#    name: springcloud-gateway
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: springcloud-provider
+#          uri: lb://springcloud-provider
+#          #断言
+#          predicates:
+#            - Path=/springcloud-provider*
+#      #为所有服务都进行转发操作
+#      discovery:
+#        locator:
+#          enabled: true
+#          #开启小写服务名称后大写的服务名称就不能使用，两者只能选其一。
+#          lowerCaseServiceId: true
 #  - id: path_route
 #      uri: http://c.biancheng.net
 #      predicates:
@@ -94,3 +94,39 @@ spring:
 #            - Header=X-Request-Id, \d+
 
 #——————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+#——————————————————————————————————————————过滤器信息————————————————————————————————————————————————————
+
+#1、ip限流
+
+spring:
+  application:
+    name: springcloud-gateway
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  cloud:
+    gateway:
+      routes:
+        - id: springcloud-provider
+          uri: lb://springcloud-provider
+          #断言
+          predicates:
+            - Path=/springcloud-provider*
+            - RemoteAddr=192.168.1.28
+      #为所有服务都进行转发操作
+      discovery:
+        locator:
+          enabled: true
+          #开启小写服务名称后大写的服务名称就不能使用，两者只能选其一。
+          lowerCaseServiceId: true
+#      filter 名称必须是 RequestRateLimiter。
+#      redis-rate-limiter.replenishRate：允许用户每秒处理多少个请求。
+#      redis-rate-limiter.burstCapacity：令牌桶的容量，允许在 1s 内完成的最大请求数。
+#      key-resolver：使用 SpEL 按名称引用 bean。
+      filter:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+            key-resolver: "#{@ipKeyResolver}"
